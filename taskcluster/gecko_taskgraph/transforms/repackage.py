@@ -215,6 +215,38 @@ PACKAGE_FORMATS = {
         },
         "output": "target.dmg",
     },
+    "dmg-lzma": {
+        "args": [
+            "dmg",
+            "--compression",
+            "lzma",
+            "--level",
+            "5",
+            "--run-sectors",
+            "2048",
+        ],
+        "inputs": {
+            "input": "target{archive_format}",
+        },
+        "output": "target.dmg",
+    },
+    "dmg-attrib-lzma": {
+        "args": [
+            "dmg",
+            "--compression",
+            "lzma",
+            "--level",
+            "5",
+            "--run-sectors",
+            "2048",
+            "--attribution_sentinel",
+            "__MOZCUSTOM__",
+        ],
+        "inputs": {
+            "input": "target{archive_format}",
+        },
+        "output": "target.dmg",
+    },
     "pkg": {
         "args": ["pkg"],
         "inputs": {
