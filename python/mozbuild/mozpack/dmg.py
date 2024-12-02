@@ -87,9 +87,12 @@ def create_dmg_from_staged(
     dmg_tool: Path = None,
     mkfshfs_tool: Path = None,
     attribution_sentinel: str = None,
-    compression: str = "bzip2",
+    compression: str = None,
 ):
     "Given a prepared directory stagedir, produce a DMG at output_dmg."
+    if compression is None:
+        # Easier to put the default here once, than in every place that takes default args
+        compression = "bzip2"
     if compression not in ["bzip2", "lzma"]:
         raise Exception("Don't know how to handle %s compression" % (compression,))
 
