@@ -2451,7 +2451,10 @@ def repackage_deb_l10n(
     "--attribution_sentinel", type=str, required=False, help="DMGs with attribution."
 )
 @CommandArgument(
-    "--compression", type=str, required=False, help="Use alternative compression algorithm"
+    "--compression",
+    type=str,
+    required=False,
+    help="Use alternative compression algorithm",
 )
 def repackage_dmg(command_context, input, output, attribution_sentinel, compression):
     if not os.path.exists(input):

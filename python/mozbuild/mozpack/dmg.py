@@ -87,9 +87,11 @@ def create_dmg_from_staged(
     dmg_tool: Path = None,
     mkfshfs_tool: Path = None,
     attribution_sentinel: str = None,
-    compression: str = None,
+    compression: str = "bzip2",
 ):
     "Given a prepared directory stagedir, produce a DMG at output_dmg."
+    if compression not in ["bzip2", "lzma"]:
+        raise Exception("Don't know how to handle %s compression" % (compression,))
 
     if is_linux:
         # The dmg tool doesn't create the destination directories, and silently
@@ -115,12 +117,10 @@ def create_dmg_from_staged(
             subprocess.check_call(["cp", hfs, str(Path(output_dmg).parent)])
             dmg_cmd.append(attribution_sentinel)
 
-        if compression == None:
-            pass
         if compression == "lzma":
-            dmg_command.extend(["--compression", "lzma", "--level", "5", "--run-sectors", "2048"])
-        else:
-            raise Exception("Don't know how to handle {} compression" % (compression,))
+            dmg_cmd.extend(
+                ["--compression", "lzma", "--level", "5", "--run-sectors", "2048"]
+            )
 
         subprocess.check_call(
             dmg_cmd,
@@ -129,13 +129,8 @@ def create_dmg_from_staged(
         )
     elif is_osx:
         format = "UDBZ"
-        if compression == None:
-            pass
         if compression == "lzma":
             format = "ULMO"
-        else:
-            raise Exception("Don't know how to handle {} compression" % (compression,))
-
 
         hybrid = tmpdir / "hybrid.dmg"
         subprocess.check_call(
